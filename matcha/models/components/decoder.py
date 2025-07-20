@@ -208,7 +208,7 @@ class Decoder(nn.Module):
         n_blocks=1,
         num_mid_blocks=2,
         num_heads=4,
-        act_fn="snake",
+        act_fn="geglu",
         down_block_type="transformer",
         mid_block_type="transformer",
         up_block_type="transformer",
