@@ -1,0 +1,76 @@
+### Task Overview:
+You are tasked with identifying and segmenting dialogue based on various scene. Each dialogue should be divided into distinct segments according to the subject scene. Your goal is to provide the segmented dialogue alongside a few examples for each topic. Ensure that the dialogue is clearly partitioned, and make sure to offer clear, well-organized examples to demonstrate the segmentation process.
+
+### Specific Instructions:
+1. **Dialogue Segmentation**:
+   - Break the conversation into distinct segments based on the topic being discussed. Each segment should focus on one specific topic or subtopic.
+   - Clearly indicate where one topic ends and another begins. 
+   
+2. **Output Format**:
+   - For each dialogue, provide a list of the segmented parts.
+   - For each segment, include the topic it corresponds to (e.g., "Weather," "Work," "Technology").
+   
+3. **Examples (Few-Shot)**:
+   - Provide at least three dialogue examples (few-shot) to demonstrate the process of topic identification and segmentation. 
+   - Each example should contain a brief explanation of why the dialogue is segmented in such a way, specifying how each part corresponds to a distinct topic.
+
+### Example 1:
+**Dialogue**:
+   - **Person A**: "It's been so rainy lately, hasn't it?"
+   - **Person B**: "Yeah, the weather's been so unpredictable. I think it’s supposed to rain all week."
+   - **Person A**: "That's unfortunate. I was planning to go hiking this weekend."
+   - **Person B**: "Oh, maybe you can try indoor activities instead."
+
+**Segmentation**:
+- **Topic 1**: **Weather**
+   - "It's been so rainy lately, hasn't it?"
+   - "Yeah, the weather's been so unpredictable."
+   - "I think it’s supposed to rain all week."
+- **Topic 2**: **Outdoor Plans**
+   - "I was planning to go hiking this weekend."
+   - "Oh, maybe you can try indoor activities instead."
+
+**Explanation**: The dialogue is segmented based on two main topics: Weather and Outdoor Plans. The first part of the conversation focuses on discussing the weather, while the second part shifts to planning around the weather, specifically outdoor activities.
+
+---
+
+### Example 2:
+**Dialogue**:
+   - **Person A**: "I need to submit the report by Friday. It's going to be a busy week."
+   - **Person B**: "Are you also working on the new project? I heard there are some tight deadlines there."
+   - **Person A**: "Yes, it's overlapping with the report deadline. I’m really stressed about managing both."
+   - **Person B**: "I understand. Maybe you should prioritize tasks to stay on top of everything."
+
+**Segmentation**:
+- **Topic 1**: **Work & Deadlines**
+   - "I need to submit the report by Friday."
+   - "Are you also working on the new project?"
+   - "Yes, it's overlapping with the report deadline."
+- **Topic 2**: **Stress Management**
+   - "I’m really stressed about managing both."
+   - "Maybe you should prioritize tasks to stay on top of everything."
+
+**Explanation**: The dialogue is segmented into two distinct topics. The first segment discusses work-related tasks and deadlines, while the second focuses on stress management and advice.
+
+---
+
+### Example 3:
+**Dialogue**:
+   - **Person A**: "Have you seen the latest iPhone model? It’s got some cool new features."
+   - **Person B**: "Yes, I was looking at it online. The camera upgrades look impressive!"
+   - **Person A**: "The design is also sleek. I might upgrade from my current phone."
+   - **Person B**: "I’m considering it too, but the price is a bit high."
+
+**Segmentation**:
+- **Topic 1**: **Technology - iPhone Features**
+   - "Have you seen the latest iPhone model?"
+   - "The camera upgrades look impressive!"
+   - "The design is also sleek."
+- **Topic 2**: **Purchasing Decision**
+   - "I might upgrade from my current phone."
+   - "I’m considering it too, but the price is a bit high."
+
+**Explanation**: This dialogue is divided into two topics. The first part discusses the new iPhone features, while the second part revolves around the purchasing decision and the price concern.
+
+
+

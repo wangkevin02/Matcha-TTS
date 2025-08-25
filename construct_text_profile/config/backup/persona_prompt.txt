@@ -1,0 +1,83 @@
+**Task:**  
+Analyze the provided dialogue to assess the user’s personality traits across 5 personality dimensions. Focus exclusively on the user’s characteristics, disregarding any information related to other individuals, unless it directly impacts the user.
+
+For each personality trait:
+1. Assign each dimension independently with **score**: "High", "Low," or "Inconclusive."
+2. Provide **conclusion**: Begin with a high-level description of the user, e.g., "The user is a [trait descriptor] person," followed by concise supporting details.
+3. Provide **reason**: Justify the assigned score with specific evidence from the dialogue.
+4. Mark traits as **Inconclusive** only when no clear evidence exists. In such cases, omit both the 'conclusion' and 'reason' fields entirely.
+
+**Personality Trait Dimensions:**
+
+1. **Conscientiousness**: The ability to regulate impulse control to engage in goal-directed behaviors.
+   - **Low scorers**: Disorganized, careless, procrastinating, undisciplined, impulsive, struggles with completing tasks, dislikes structure, engages in careless behavior.
+   - **High scorers**: Organized, disciplined, detail-oriented, thoughtful, careful, competent, dutiful, achievement-striving, self-disciplined, considerate, good at completing tasks and achieving goals.
+
+2. **Agreeableness**: Reflects how individuals treat relationships and interact with others.
+   - **Low scorers**: Skeptical, demanding, insulting, stubborn, show-offs, unsympathetic, less caring, suspicious, manipulative, uncooperative, antagonistic, less likely to be trusted.
+   - **High scorers**: Trustful, straightforward, altruistic, compliant, modest, sympathetic, empathetic, soft-hearted, helpful, cooperative, well-liked, sensitive to others' needs.
+
+3. **Extraversion**: Reflects the tendency and intensity of seeking interaction with the environment, particularly socially.
+   - **Low scorers**: Happy in solitude, fatigued by social interaction, reflective, uncomfortable being center of attention, reserved, quiet, prefer listening to others, need periods of solitude to regain energy.
+   - **High scorers**: Sociable, energized by social interaction, excitement-seeking, happy to be center of attention, outgoing, assertive, fun-loving, thrive in social situations, comfortable voicing opinions.
+
+4. **Openness**: Refers to willingness to try new things and engage in imaginative or intellectual activities.
+   - **Low scorers**: Predictable, not very imaginative, uncomfortable with change, strict with routine, traditional, prefer familiar over unknown, practical, find it difficult to think creatively or abstractly.
+   - **High scorers**: Curious, imaginative, creative, open to trying new things, unconventional, artistic, prefer variety, value independence, enjoy traveling and learning new things.
+
+5. **Neuroticism**: Describes overall emotional stability and the likelihood of experiencing negative emotions.
+   - **Low scorers**: Laid back, calm, emotionally stable, confident, resilient, rarely sad or depressed, secure, self-satisfied, less anxious or moody.
+   - **High scorers**: Anxious, hostile, very stressed, self-conscious, vulnerable, experiencing dramatic mood shifts, insecure, self-pitying, moody, irritable, prone to sadness and low self-esteem.
+
+
+**Format:**  
+```json
+{
+    "Trait Name": {
+        "score": "High/Low/Inconclusive",
+        "conclusion": "The user is a [trait descriptor] person, [additional details as appropriate].",
+        "reason": "Explanation referencing specific dialogue evidence."
+    },
+    ...
+}
+```
+
+
+**Guidelines:**  
+- Carefully analyze the dialogue to extract and evaluate the user's personality traits in JSON format, even if the user is sharing a story about someone else.
+- Assign scores for each trait and provide explanations using concrete dialogue examples. 
+- Use precise vocabulary to match the assigned score, ensuring vivid and nuanced trait descriptions.
+- Justify assessments by referencing specific dialogue evidence, even when subtle or indirect.
+
+
+
+**Example:**  
+```dialogue
+[Assistant]: That’s what I’m here for. I want to support you in any way I can, especially given your situation. Can you tell me more about your cousin?
+[User]: "She is my age, in a homeless women’s shelter, living under very poor conditions. She is a mental health client, but the treatment team seems to believe that as long as they keep her medicated, their job is done. She has been diagnosed with bipolar disorder and possibly has borderline personality disorder. Her background is similar to mine, and I cannot abandon her."
+```
+
+Detected Personality Traits:
+```json
+{
+  "Conscientiousness": {
+    "score": "High",
+    "conclusion": "The user is a conscientious person who demonstrates a sense of duty and commitment.",
+    "reason": "The user expresses a strong sense of responsibility and persistence in supporting their cousin, despite the challenges involved. This suggests a disciplined and dutiful approach."
+  },
+  "Agreeableness": {
+    "score": "High",
+    "conclusion": "The user is an empathetic and compassionate person who values relationships.",
+    "reason": "The user shows care and concern for their cousin’s well-being and expresses a sense of loyalty and unwillingness to abandon her, indicating empathy and altruism."
+  },
+  "Extraversion": {
+    "score": "Inconclusive"
+  },
+  "Openness": {
+    "score": "Inconclusive"
+  },
+  "Neuroticism": {
+    "score": "Inconclusive"
+  }
+}
+```

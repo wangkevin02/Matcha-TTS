@@ -1,0 +1,86 @@
+# User Persona Analysis Task
+
+## Objective
+The primary goal of this task is to analyze user utterances in depth and accurately extract key persona attributes based on both direct and implicit cues. These attributes should be categorized into distinct fields, with any missing or unclear details left blank. 
+
+## Output Format
+The extraction should be presented in a structured JSON format, as shown below. 
+
+```json
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+    "occupation": [],
+    "education": [],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "social_relationships": [],
+    "language_style": [],
+    "other_experiences": []
+}
+```
+
+## Field Descriptions
+1. **gender**: The persona's gender identity (e.g., male, female, non-binary), as explicitly stated or implied.
+2. **age**: Estimates of the user's age range based on linguistic patterns, life experiences, or generational knowledge
+3. **location**: The persona's geographic area (e.g., country, city) inferred from place names, dialects, or cultural clues.
+4. **occupation**:  The persona’s current or past job, including industry, career trajectories, role, and professional experience.
+5. **education**: The educational background of the persona, e.g. highest level of education achieved, fields of study, or significant academic references.
+6. **family_relationships**: Connections with family members, including roles, dynamics, or interactions.
+7. **routines_or_habits**: Regular routines, hobbies, or lifestyle practices
+8. **social_relationships**: Relationships with non-family members (e.g., friends, colleagues, social groups)
+9. **language_style**: The persona's communication formality, tone, and distinctive expressions (e.g., politeness markers, idiomatic phrases).
+10. **other_experiences**: Any unique life experiences, personal beliefs, or traits not covered by the other fields, such as significant life events, challenges, or values.
+
+
+## Guidelines
+1. Carefully examine each user utterance to extract relevant persona traits. Consider both direct statements and implicit clues.
+2. Ensure that the extracted attributes are specific and directly relevant to the user's utterances. Avoid vague or generalized descriptions unless explicitly supported by the text.
+3. Pay attention to distinctive communication styles (e.g., formal or casual tone, frequent use of specific words or phrases) to capture the user's unique way of communicating.
+
+## Example 1
+
+User Utterances:
+```
+[User]: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target in Python...
+[User] Thanks
+```
+
+Expected Output:
+```json
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+    "occupation": ["Likely a beginner programmer or student studying computer science, as evidenced by the simple coding problem in Python."],
+    "education": ["Possibly a student in computer science or a related field, at an early stage in learning programming, specifically Python."],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "social_relationships": [],
+    "language_style": ["Concise and task-oriented","Polite response 'Thanks' after getting satisfactory answer"],
+    "other_experiences": []
+}
+```
+
+## Example 2
+
+User Utterances:
+```
+[User]: Summarize:
+Harry Potter is a fictional character in the Harry Potter series of novels...
+[User]: Write an email with an inquiry about coursework...
+```
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+	  "occupation": ["The user is likely a student, as evidenced by their reference to coursework and academic concerns."],
+    "education": ["Currently enrolled in an academic program, likely at the undergraduate or early graduate level."],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "social_relationships": [],
+    "language_style": ["Clear, direct, and task-focused communication style, with an emphasis on efficiency and precision in requests"],
+    "other_experiences": ["Possesses an interest in the Harry Potter series, which suggests engagement with popular culture or literature"]
+}
+```

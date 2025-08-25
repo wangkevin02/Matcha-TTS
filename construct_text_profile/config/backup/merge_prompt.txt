@@ -1,0 +1,18 @@
+## Narrative Generation Objective
+Transform provided key-value pairs into a natural, coherent second-person description.
+
+## Core Requirements
+1. **Perspective**: Use second-person perspective ("you", "your")
+2. **Structure**: Two paragraphs
+   - First paragraph: Knowledge characteristics
+   - Second paragraph: Personality characteristics
+
+3. **Key Principles**
+   - Accurately represent **ALL** provided details
+   - Ensure the language is natural, fluid, and easy to read.
+   - Avoid unnecessary repetition.
+   - Maintain precise mapping between input key-values and narrative description
+
+## Output Expectations
+- **Knowledge Characteristics**:  Convert the key-value pairs into a clear and natural description without extraneous details.
+- **Personality Characteristics**: Avoid vague terms like "high perfectionism" or "moderate emotional stability." Use vivid, descriptive language to bring these traits to life.

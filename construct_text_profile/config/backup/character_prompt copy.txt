@@ -1,0 +1,222 @@
+# User Persona Analysis Task
+
+## Objective
+Analyze provided dialogues comprehensively to extract relevant user persona attributes, ensuring detailed and precise information extraction from all presented scenarios, even when expressions are ambiguous or indirect. Categorize the data into specified fields, leaving fields empty when no reasonable inference can be made.
+
+## Output Format
+Utilize the following JSON structure for your analysis:
+
+```json
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+    "occupation": [],
+    "education": [],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "goals_or_plans": [],
+    "social_relationships": [],
+    "language_style": [],
+    "other_experiences": [],
+}
+```
+
+## Field Descriptions
+
+1. **gender**: The persona's gender identity (e.g., male, female, non-binary), as explicitly stated or implied.
+2. **age**: Estimates of the user's age range based on linguistic patterns, life experiences, or generational knowledge
+3. **location**: The persona's geographic area (e.g., country, city) inferred from place names, dialects, or cultural clues.
+4. **occupation**:  The persona’s current or past job, including industry, career trajectories, role, and professional experience.
+5. **education**: The educational background of the persona, e.g. highest level of education achieved, fields of study, or significant academic references.
+6. **family_relationships**: Connections with family members, including roles, dynamics, or interactions.
+7. **routines_or_habits**: Regular routines, hobbies, or lifestyle practices
+8. **goals_or_plans**: Short-term or long-term objectives; if not explicitly stated, infer from the main conversation topic
+9. **social_relationships**: Relationships with non-family members (e.g., friends, colleagues, social groups)
+10. **language_style**: The persona's communication formality, tone, and distinctive expressions (e.g., politeness markers, idiomatic phrases).
+11. **other_experiences**: Unique life events（e.g. beliefs, or sensitivities） not covered by other categories.
+
+
+## Guidelines
+
+1. Carefully analyze the dialogue to extract and evaluate the user's specific user characteristics, experiences, or preferences in JSON format, even if the user is relating a third-party narrative.
+2. Include relevant information even if expressed ambiguously or indirectly, categorizing it into the most appropriate predefined fields.
+3. For the "goals_or_plans" field, infer based on the main topic or theme of the conversation if no explicit or implicit mention is made.
+4. Always provide an age range estimate in the "age" field based on the content of the discussion (e.g., advanced coding challenges might imply post-undergraduate age). If the information is limited, provide a broader range (e.g., "20s to 40s" or "adult, likely 25-60").
+5. Include any distinctive linguistic patterns or characteristic expressions in the "language_style" field.
+6. For dialogues covering multiple topics, extract and organize information from all scenarios under their respective fields.
+
+## Example 1
+
+Input Dialogue:
+```
+[Assistant]: That's excellent. I don't think you should take on this boss's emotions as a reason to stay with a job you're burning out on.
+[User]: with us both being veterans it goes beyond a boss relationship hes like family i feel like id be fucking over the whole nation turning my back on another veteran.
+```
+
+Expected Output:
+```json
+{
+  "gender": ["Possibly male, inferred from military background and direct, emphatic language"],
+  "age": ["Likely late 20s to 50s, based on veteran status and mention of ongoing work or career transition"],
+  "location": ["Unspecified, but likely from a culture emphasizing military service, such as the United States"],
+  "occupation": ["Former military service (veteran)", "Currently employed, possibly in a civilian role"],
+  "education": ["Implied military training or education, inferred from veteran status"],
+  "family_relationships": [],
+  "routines_or_habits": [],
+  "goals_or_plans": ["Considering leaving current role due to burnout, balancing personal well-being with loyalty to peers"],
+  "social_relationships": ["Strong, family-like bond with boss, rooted in shared military experience"],
+  "language_style": ["Informal, uses emphatic expressions to convey strong emotions (e.g., 'fucking over the whole nation')"],
+  "other_experiences": ["Exhibits a deep sense of loyalty, responsibility, and moral obligation toward fellow veterans"]
+}
+```
+
+## Example 2
+
+Input Dialogue:
+```
+[Assistant]: Hi! What’s been keeping you busy lately?  
+[User]: I’ve been working on PhD applications in mathematics. My main focus is optimization theory and its applications in machine learning. I’ve also picked up cooking—it’s a great way to unwind after a long day.  
+[Assistant]: That’s impressive! What inspires you to focus on these areas?  
+[User]: Math excites me because I enjoy solving abstract problems and seeing how they can impact real-world challenges like AI. Cooking, on the other hand, helps me relax and recharge—it’s a perfect balance.
+```
+
+Expected Output:
+```json
+{
+    "gender": [],
+    "age": ["Likely mid-20s to early 30s, inferred from PhD preparation and personal interests"],
+    "location": [],
+    "occupation": [],
+    "education": ["Undergraduate or graduate degree holder preparing to pursue a PhD in mathematics"],
+    "family_relationships": [],
+    "routines_or_habits": ["Unwinds by cooking after a long day"],
+    "goals_or_plans": ["To pursue a PhD in mathematics with optimization theory applicable to AI and machine learning"],
+    "social_relationships": [],
+    "language_style": ["Clear and reflective, combining academic precision with a warm, personal touch"],
+    "other_experiences": ["Interested in Explores connections between theoretical mathematics and real-world applications, particularly in AI", "maintain a healthy work-life balance through creative hobbies like cooking"]
+}
+```
+
+
+# User Persona Analysis Task
+
+## Objective
+Analyze provided user utterances comprehensively to extract relevant user persona attributes, ensuring detailed and precise information extraction from all presented scenarios, even when expressions are ambiguous or indirect. Categorize the data into specified fields, leaving fields empty when no reasonable inference can be made.
+
+## Output Format
+Utilize the following JSON structure for your analysis:
+
+```json
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+    "occupation": [],
+    "education": [],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "goals_or_plans": [],
+    "social_relationships": [],
+    "language_style": [],
+    "other_experiences": [],
+}
+```
+
+## Field Descriptions
+
+1. **gender**: The persona's gender identity (e.g., male, female, non-binary), as explicitly stated or implied.
+2. **age**: Estimates of the user's age range based on linguistic patterns, life experiences, or generational knowledge
+3. **location**: The persona's geographic area (e.g., country, city) inferred from place names, dialects, or cultural clues.
+4. **occupation**:  The persona’s current or past job, including industry, career trajectories, role, and professional experience.
+5. **education**: The educational background of the persona, e.g. highest level of education achieved, fields of study, or significant academic references.
+6. **family_relationships**: Connections with family members, including roles, dynamics, or interactions.
+7. **routines_or_habits**: Regular routines, hobbies, or lifestyle practices
+8. **goals_or_plans**: Short-term or long-term objectives; if not explicitly stated, infer from the main conversation topic
+9. **social_relationships**: Relationships with non-family members (e.g., friends, colleagues, social groups)
+10. **language_style**: The persona's communication formality, tone, and distinctive expressions (e.g., politeness markers, idiomatic phrases).
+11. **other_experiences**: Unique life events（e.g. beliefs, or sensitivities） not covered by other categories.
+
+
+## Guidelines
+
+1. Carefully analyze the dialogue to extract and evaluate the user's specific user characteristics, experiences, or preferences in JSON format, even if the user is relating a third-party narrative.
+2. Include relevant information even if expressed ambiguously or indirectly, categorizing it into the most appropriate predefined fields.
+3. For the "goals_or_plans" field, infer based on the main topic or theme of the conversation if no explicit or implicit mention is made.
+4. Always provide an age range estimate in the "age" field based on the content of the discussion (e.g., advanced coding challenges might imply post-undergraduate age). If the information is limited, provide a broader range (e.g., "20s to 40s" or "adult, likely 25-60").
+5. Include any distinctive linguistic patterns or characteristic expressions in the "language_style" field.
+6. For dialogues covering multiple topics, extract and organize information from all scenarios under their respective fields.
+7. When the user provides a story, example, or task scenario, prioritize extracting persona traits from the user's request (e.g., their inquiry or goal). Do not infer characteristics from the input content unless it directly pertains to the user.
+
+## Example 1
+
+User Utterances:
+```
+[User]: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target in Python...
+[User] Thanks
+```
+
+Expected Output:
+```json
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+    "occupation": ["Likely a beginner programmer or student studying computer science, as evidenced by the simple coding problem in Python."],
+    "education": ["Possibly a student in computer science or a related field, at an early stage in learning programming, specifically Python."],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "goals_or_plans": ["Currently focused on solving algorithmic problems (e.g., array manipulation and sum calculation) in Python, likely to strengthen programming skills."],
+    "social_relationships": [],
+    "language_style": ["Concise and task-oriented, with clear communication and a polite, respectful tone."],
+    "other_experiences": []
+}
+```
+
+## Example 2
+
+User Utterances:
+```
+[User]: Solve the problem below:
+Prove that KKT conditions holds in following problem...
+```
+
+Expected Output:
+```json
+{
+    "gender": [],
+    "age": ["College-age or older (20+), based on engagement with graduate-level optimization theory"],
+    "location": [],
+    "occupation": ["Academic role - likely a graduate student or researcher in optimization theory"],
+    "education": ["Advanced mathematics background, specifically in Optimization theory, Constrained optimization or Mathematical programming"],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "goals_or_plans": ["Seeking to demonstrate understanding of optimization theory fundamentals through KKT conditions proof"],
+    "social_relationships": [],
+    "language_style": ["Technical and precise, using mathematical terminology and formal proof structure"],
+    "other_experiences": []
+}
+```
+
+## Example 3
+
+User Utterances:
+[User]: Summarize:
+Harry Potter is a fictional character in the Harry Potter series of novels...
+[User]: Write an email with an inquiry about coursework...
+
+```
+{
+    "gender": [],
+    "age": [],
+    "location": [],
+    "occupation": ["student"],
+    "education": ["Currently taking courses, likely at an undergraduate or early graduate level"],
+    "family_relationships": [],
+    "routines_or_habits": [],
+    "goals_or_plans": ["Seeking to better understand the Harry Potter series, possibly for academic or personal enrichment", "Developing professional communication skills, indicated by the request for writing a formal email"],
+    "social_relationships": [],
+    "language_style": ["Clear, direct, and task-focused communication style, with an emphasis on efficiency and precision in requests"],
+    "other_experiences": ["Interested the Harry Potter series, suggesting interest in literature or popular culture."]
+}
+```

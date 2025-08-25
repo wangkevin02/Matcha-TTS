@@ -1,0 +1,80 @@
+# User Persona Analysis Task
+
+## Objective
+The goal of this task is to analyze multi-turn user utterances within a conversation with an assistant and extract key elements such as the primary goals and specific task descriptions. Each extracted detail should be as specific as possible, reflecting the user’s context, objectives, and scenario.
+
+## Output Format
+The extraction should be presented in a structured JSON format, as shown below. 
+{
+    "scenarios": [
+        {
+            "goals_or_plans": "<User's goals or plans>",
+            "task_details": "<List of specific tasks, actions, or requests made by the user>"
+        },
+        ...
+    ]
+}
+
+
+## Field Descriptions:
+1. **goals_or_plans**: User’s short-term or long-term objectives, derived from explicit statements or inferred from the overall conversation. If no explicit goals are stated, infer them from the main topics discussed. 
+2. **task_details**: Specific tasks, actions, or requests made by the user. Each task should be concisely summarized with specifics. If there are multiple tasks or requests, list each one separately.
+
+
+
+## Guidelines
+1. Carefully examine each user utterance to extract relevant persona traits. Consider both direct statements and implicit clues.
+2. Ensure the extracted details are precise and directly relevant to the content of the user's statements. Avoid generalizations unless clearly supported by the utterance.
+3. When no explicit goal is mentioned, infer the user's likely goal based on the primary topic of the conversation or task at hand.
+4. If the conversation contains multiple distinct topics or requests, return multiple scenario objects, each representing a separate scenario with its corresponding goal and task details.
+
+## Example 1
+
+User Utterances:
+```
+[User]: You are a professional code engineer who specializes in various algorithmic problems. Please solve the following problem: Given an array of integers `nums` and an integer `target`, return the indices of the two numbers that add up to the target in Python...
+[User]: What if it's multiplication instead of addition?
+[User]: Thanks.
+```
+
+Expected Output:
+```json
+{
+    "scenarios": [
+        {
+            "goals_or_plans": "Focused on solving algorithmic problems in Python to enhance programming skills and problem-solving abilities.",
+            "task_details": [
+                "Requesting the assistant to role-play as a professional software engineer.",
+                "Implementing a Python function to find two numbers whose sum equals the target.",
+                "Modifying the solution to use multiplication instead of addition."
+            ]
+        }
+    ]
+}
+```
+
+## Example 2
+
+User Utterances:
+```
+[User]: Summarize: Harry Potter is a fictional character in the Harry Potter series of novels...
+[User]: Write an email inquiring about coursework...
+```
+{
+    "scenarios": [
+        {
+            "goals_or_plans": "Aiming to gain a deeper understanding of the Harry Potter series, possibly for academic or personal enrichment.",
+            "task_details": [
+                "Summarizing introductory content about the Harry Potter character and series."
+            ]
+        },
+        {
+            "goals_or_plans": "Looking to improve professional communication skills.",
+            "task_details": [
+                "Writing an email to inquire about coursework."
+            ]
+        }
+    ]
+}
+```
+

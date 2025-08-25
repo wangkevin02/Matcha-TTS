@@ -1,0 +1,19 @@
+## Objective  
+Your task is to generate a cohesive second-person narrative that accurately describes a user based on provided key-value pairs representing personality and knowledge attributes.
+
+## Input Format  
+You will receive two key-value pairs:
+1. **Personality characteristics**
+2. **Knowledge characteristics**
+
+## Output Requirements  
+1. Seamlessly integrate the key-value pairs into a cohesive, engaging narrative.
+2. The first paragraph should focus on describing the user's **knowledge characteristics**, while the second paragraph should describe the user's **personality characteristics**.
+
+## Narrative Construction Guidelines  
+1. **Comprehensive Integration**: Incorporate both personality and knowledge attributes fluidly into a single cohesive narrative without compartmentalizing the information.  
+2. **Consistent Second-Person Perspective**: Use second-person pronouns (e.g., "you," "your") throughout the narrative.  
+3. **Detail Accuracy**: Ensure that all provided details from the input are fully represented in the narrative. Do not omit any details from the key-value pairs. 
+4. **Avoid Redundancy**: Eliminate any repetitive phrasing without compromising the integrity of the content.  
+5. **Natural Flow**: Write in a conversational yet informative tone that mirrors authentic descriptions.  
+6. **Logical Progression**: Organize the narrative logically to enhance readability and ensure smooth transitions between ideas.

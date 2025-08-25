@@ -1,0 +1,60 @@
+general:
+  proxy:
+    http: 'http://127.0.0.1:7890'
+    https: 'http://127.0.0.1:7890'
+    ftp: 'ftp://127.0.0.1:7890'
+    host: 'http://localhost:7890'
+  headers:
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0"
+  save_dir: "./res"
+  app_save_dir: "./app_res"
+  backend_url: "http://127.0.0.1:8000"
+  allowed_file_types: [".html",".css",".js",".png",".jpg",".jpeg",".pdf",".md"]
+  middleware_url: "http://127.0.0.1:8005"
+  frontend_url: "http://127.0.0.1:3000"
+
+arxiv:
+  key_word: null # keyword can be str or list of str, and can be url itself. If search daily submission, set null
+  daily_type: "cs"
+  download: false
+  max_return: 2
+
+openai:
+  api_key: "sk-npSRVdUhy5gszhxT508aE80f6f0d40638a6b8309DbF5E569"  #sk-npSRVdUhy5gszhxT508aE80f6f0d40638a6b8309DbF5E569 #"sk-zfPeFIqwVlT3rlAv9f5a2258A3D44c0487EbEe69B30224Fb" (gaochao) "sk-VBt2c7nqVQcmBi3i0721E63292C4439eA1246a7a4a7e511b","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"
+  prompts_path:
+    './prompts_config.json'
+  ignore_title: ["reference","appendix","acknowledg"]
+  base_url: "https://api.ai-gaochao.cn/v1"                                    # ,"https://api.ai-gaochao.cn/v1" "https://gtapi.xiaoerchaoren.com:8932/v1/chat/completions"
+  model_config:
+    model: "gpt-4o"  #gpt-4o
+    temperature: 1.0
+    max_tokens: 128000 # Max tokens per request
+    top_p: 1.0
+    frequency_penalty: 0.1
+    presence_penalty: 0.2
+    max_output_tokens: 4096
+
+
+
+
+nougat:
+  check_point : "./pretrained_w"
+  pdf : ["./exp/dataset/23pdf_selected/2401_08619.pdf"]    # list of pdf path or pdf dir
+  recompute : true
+  markdown : true
+
+tts:
+  base_url: "https://openapi.youdao.com/ttsapi"
+  api_key: '21a52d8cbabd6256'
+  app_secret: 'MYttHedJuswCG6CNoyhd5YWH5egzQPSa'
+  model: "youdao"
+
+alignment:
+  min_grained_level: 3  # The grid level for aligning pictures with subtitles. For example, setting it to 3 means the picture can be aligned with a 3-level subtitle (e.g., ### subtitle). Setting init_grid to 2 means it can be aligned with a 2-level subtitle (e.g., ## subtitle).
+  max_grained_level: 4  # The maximum grid level for section splitting. For instance, setting it to 4 means the article structure can be split into 4-level subtitles (e.g., #### subtitle).
+  threshold: 0.9
+  img_width: 300
+  margin: 10
+
+
+

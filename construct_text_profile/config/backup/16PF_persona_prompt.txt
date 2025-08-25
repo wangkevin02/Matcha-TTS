@@ -1,0 +1,127 @@
+**Task:**  
+Analyze the provided dialogue to assess the user’s personality traits across 16 personality dimensions. Focus exclusively on the user’s characteristics, disregarding any information related to other individuals, unless it directly impacts the user.
+
+For each personality trait:
+1. Assign each dimension independently with **score**: "High," "Moderate," "Low," or "Inconclusive."
+2. Provide **conclusion**: Begin with a high-level description of the user, e.g., "The user is a [trait descriptor] person," followed by concise supporting details.
+3. Provide **reason**: Justify the assigned score with specific evidence from the dialogue.
+4. Mark traits as **Inconclusive** only when no clear evidence exists. In such cases, omit both the 'conclusion' and 'reason' fields entirely.
+
+**Personality Trait Dimensions:**
+
+1. **Warmth**: How considerate and empathetic you are towards others.
+   - Low scorers: Impersonal, distant, cool, reserved, detached.
+   - High scorers: Warm-hearted, caring, attentive to others.
+
+2. **Reasoning**: One's capacity for abstract thinking.
+   - Low scorers: Prefer common sense and concrete thinking, lower mental capacity.
+   - High scorers: Greater capacity for abstract thought and rapid learning.
+
+3. **Emotional Stability**: How well you manage your emotions.
+   - Low scorers: Reactive, changeable, emotionally unstable, easily upset.
+   - High scorers: Emotionally stable, adaptive, mature, calm.
+
+4. **Dominance**: How assertive you are in social interactions.
+   - Low scorers: Deferential, cooperative, avoids conflict, submissive, humble, obedient.
+   - High scorers: Dominant, forceful, assertive, competitive, stubborn.
+
+5. **Liveliness**: How energetic and animated you are.
+   - Low scorers: Serious, restrained, prudent, taciturn, introspective, silent.
+   - High scorers: Lively, animated, spontaneous, enthusiastic, cheerful, expressive, impulsive.
+
+6. **Rule-Consciousness**: How much you adhere to rules and norms.
+   - Low scorers: Nonconforming, self-indulgent, disregard rules.
+   - High scorers: Rule-conscious, dutiful, conscientious, conforming, moralistic.
+
+7. **Social Boldness**: How confident you are in social situations.
+   - Low scorers: Shy, threat-sensitive, timid, hesitant, intimidated.
+   - High scorers: Socially bold, venturesome, thick-skinned, uninhibited.
+
+8. **Sensitivity**: How emotionally affected you can be.
+   - Low scorers: Utilitarian, objective, unsentimental, tough-minded, self-reliant.
+   - High scorers: Sensitive, aesthetic, sentimental, tender-minded, intuitive, refined.
+
+9. **Vigilance**: How trusting or suspicious you are.
+   - Low scorers: Trusting, unsuspecting, accepting, unconditional.
+   - High scorers: Vigilant, suspicious, skeptical, distrustful.
+
+10. **Abstractedness**: How imaginative and creative you are.
+    - Low scorers: Grounded, practical, prosaic, solution-oriented, steady, conventional.
+    - High scorers: Abstract, imaginative, absent-minded, impractical, absorbed in ideas.
+
+11. **Privateness**: How open and honest you are about yourself.
+    - Low scorers: Forthright, genuine, artless, open, guileless, naive, unpretentious, involved.
+    - High scorers: Private, discreet, nondisclosing, shrewd, polished, worldly, astute, diplomatic.
+
+12. **Apprehension**: How troubled or anxious you are.
+    - Low scorers: Self-assured, unworried, complacent, secure, free of guilt, confident, self-satisfied.
+    - High scorers: Apprehensive, self-doubting, worried, guilt-prone, insecure, self-blaming.
+
+13. **Openness to Change**: How flexible and adaptable you are.
+    - Low scorers: Traditional, attached to familiar, conservative, respectful of traditional ideas.
+    - High scorers: Open to change, experimental, liberal, analytical, critical, free-thinking, flexible.
+
+14. **Self-Reliance**: How independent and self-sufficient you are.
+    - Low scorers: Group-oriented, affiliative.
+    - High scorers: Self-reliant, solitary, resourceful, individualistic, self-sufficient.
+
+15. **Perfectionism**: How high your standards are for yourself.
+    - Low scorers: Tolerate disorder, unexacting, flexible, undisciplined, lax, self-conflicted, impulsive, careless of social rules, uncontrolled.
+    - High scorers: Perfectionist, organized, compulsive, self-disciplined, socially precise, exacting willpower, controlled, self-sentimental.
+
+16. **Tension**: How driven and impatient you are.
+    - Low scorers: Relaxed, placid, tranquil, torpid, patient, composed, low drive.
+    - High scorers: Tense, high energy, impatient, driven, frustrated, overwrought, time-driven.
+
+
+**Format:**  
+```json
+{
+    "Trait Name": {
+        "score": "High/Moderate/Low/Inconclusive",
+        "conclusion": "The user is a [trait descriptor] person, [additional details as appropriate].",
+        "reason": "Explanation referencing specific dialogue evidence."
+    },
+    ...
+}
+```
+
+
+**Guidelines:**  
+- Carefully analyze the dialogue to extract and evaluate the user's personality traits in JSON format, even if the user is sharing a story about someone else.
+- Assign scores for each trait and provide explanations using concrete dialogue examples. 
+- Use precise vocabulary to match the assigned score, ensuring vivid and nuanced trait descriptions.
+- Justify assessments by referencing specific dialogue evidence, even when subtle or indirect.
+
+
+
+**Example:**  
+```dialogue
+[Assistant]: That’s what I’m here for. I want to support you in any way I can, especially given your situation. Can you tell me more about your cousin?
+[User]: "She is my age, in a homeless women’s shelter, living under very poor conditions. She is a mental health client, but the treatment team seems to believe that as long as they keep her medicated, their job is done. She has been diagnosed with bipolar disorder and possibly has borderline personality disorder. Her background is similar to mine, and I cannot abandon her."
+```
+
+Detected Personality Traits:
+```json
+{
+    "Warmth": {
+        "score": "High",
+        "conclusion": "The user is a warm-hearted and empathetic person, deeply committed to the well-being of others and demonstrating a profound sense of compassion and responsibility.",
+        "reason": "His proactive efforts to support a family member navigating challenging circumstances reflect a high degree of warmth and compassionate engagement."
+    },
+    "Emotional Stability": {
+        "score": "Moderate",
+        "conclusion": "The user is emotionally resilient but also deeply invested in their concerns, reflecting a person who balances emotional involvement with composure.",
+        "reason": "The user concerns for his cousin indicates emotional investment, which may challenge stability."    
+    },
+    "Vigilance": {
+        "score": "High",
+        "conclusion": "The user is a vigilant and observant individual, highly attuned to identifying systemic issues and advocating for better care for those in need.",
+        "reason": "The user recognize shortcomings in the care provided to his cousin, showing vigilance and concern."
+    },
+    "Reasoning": {
+        "score": "Inconclusive"
+    }
+    ...
+}
+```
