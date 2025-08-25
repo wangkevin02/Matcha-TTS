@@ -20,7 +20,7 @@ arxiv:
   max_return: 2
 
 openai:
-  api_key: "sk-xxx" 
+  api_key: "xxx" 
   prompts_path:
     './prompts_config.json'
   ignore_title: ["reference","appendix","acknowledg"]
