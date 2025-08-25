@@ -41,13 +41,13 @@ class MatchaTTS(BaseLightningClass):  # 🍵
 
         self.save_hyperparameters(logger=False)
 
-        self.n_vocab = n_vocab
-        self.n_spks = n_spks
-        self.spk_emb_dim = spk_emb_dim
-        self.n_feats = n_feats
-        self.out_size = out_size
-        self.prior_loss = prior_loss
-        self.use_precomputed_durations = use_precomputed_durations
+        self.n_vocab = n_vocab # 178
+        self.n_spks = n_spks # 1
+        self.spk_emb_dim = spk_emb_dim # 64
+        self.n_feats = n_feats # 80
+        self.out_size = out_size # 178
+        self.prior_loss = prior_loss # True
+        self.use_precomputed_durations = use_precomputed_durations # False
 
         if n_spks > 1:
             self.spk_emb = torch.nn.Embedding(n_spks, spk_emb_dim)
@@ -116,25 +116,30 @@ class MatchaTTS(BaseLightningClass):  # 🍵
             spks = self.spk_emb(spks.long())
 
         # Get encoder_outputs `mu_x` and log-scaled token durations `logw`
+        # mu_x: (batch_size,80,num_phonemes), logw: (batch_size,1,num_phonemes), x_mask: (batch_size,1,num_phonemes)
+        # mu_x:  phoneme ID 经过 Embedding 层、一个 Transformer 结构的编码器，得到每个音素的高维特征表示。
+        #       随后通过一个投影层 (proj_m)，其输出维度被调整为与梅尔频谱的特征维度 n_feats (通常是80) 相同。这个最终的输出就是 mu_x。
+        # logw: 每个音素对应的 duration 预测值。
+        # x_mask: 每个音素是否有效。
         mu_x, logw, x_mask = self.encoder(x, x_lengths, spks)
 
-        w = torch.exp(logw) * x_mask
-        w_ceil = torch.ceil(w) * length_scale
-        y_lengths = torch.clamp_min(torch.sum(w_ceil, [1, 2]), 1).long()
+        w = torch.exp(logw) * x_mask # w: (batch_size,1,num_phonemes)
+        w_ceil = torch.ceil(w) * length_scale # 将每个音素的 duration 预测值向上取整，并根据 length_scale 进行缩放。
+        y_lengths = torch.clamp_min(torch.sum(w_ceil, [1, 2]), 1).long() # y_lengths: (batch_size,), batch中phoneme的duration总和
         y_max_length = y_lengths.max()
-        y_max_length_ = fix_len_compatibility(y_max_length)
-
-        # Using obtained durations `w` construct alignment map `attn`
-        y_mask = sequence_mask(y_lengths, y_max_length_).unsqueeze(1).to(x_mask.dtype)
-        attn_mask = x_mask.unsqueeze(-1) * y_mask.unsqueeze(2)
-        attn = generate_path(w_ceil.squeeze(1), attn_mask.squeeze(1)).unsqueeze(1)
-
+        # 将 y_max_length 调整为 2^num_downsamplings_in_unet 的幂次的倍数，例如4的倍数,(170) -> 172, 在 decoder.py 中，下采样是通过 stride=2 的卷积实现的，每次操作都会使长度减半。如果输入长度不是2的整数倍，就会出现问题。
+        # 示例： 初始序列长度为 170->第一次下采样: 序列长度变为 170 / 2 = 85->第二次下采样: 序列长度变为 ceil(85 / 2) = 43-> 第一次上采样: 序列长度从 43 变为 43 * 2 = 86,此时，模型尝试将这个长度为 86 的上采样特征，与第一次下采样时保存的那个长度为 85 的特征图进行合并。
+        y_max_length_ = fix_len_compatibility(y_max_length) 
+        # Using obtained durations `w` construct alignment map `attn`, 由于y_max_length_延长了y_max_length, 所以attn_mask在对应位置为0
+        y_mask = sequence_mask(y_lengths, y_max_length_).unsqueeze(1).to(x_mask.dtype) # y_mask: (batch_size,1,total_length_of_predict_duration(172))
+        attn_mask = x_mask.unsqueeze(-1) * y_mask.unsqueeze(2) # attn_mask: (batch_size,1,num_phonemes(30),total_length_of_predict_duration(172)), 对于每个phoneme, 都跟当前乘上duration后的长度进行attention，当前结果为每个样本对应的duration位置，值为1，例如样本1, valid_duration= 150, 则attn_mask: [150*1 | 22*0]
+        attn = generate_path(w_ceil.squeeze(1), attn_mask.squeeze(1)).unsqueeze(1) # attn: (batch_size,1,num_phonemes(30),total_length_of_predict_duration(172)),细化了每个音素的attention，使得每个phoneme对应的duration位置，值为1，而非上一步同一个样本所有音素的attn_mask都是一样的，整个样本的duration范围都是1
         # Align encoded text and get mu_y
-        mu_y = torch.matmul(attn.squeeze(1).transpose(1, 2), mu_x.transpose(1, 2))
-        mu_y = mu_y.transpose(1, 2)
-        encoder_outputs = mu_y[:, :, :y_max_length]
+        mu_y = torch.matmul(attn.squeeze(1).transpose(1, 2), mu_x.transpose(1, 2)) # mu_y: (batch_size, total_length_of_predict_duration(172), num_mels), 将每个音素的num_mels特征分配到对应的duration位置，或者说是copy到对应的duration位置
+        mu_y = mu_y.transpose(1, 2) # mu_y: (batch_size, num_mels, total_length_of_predict_duration(172))
+        encoder_outputs = mu_y[:, :, :y_max_length] # encoder_outputs: (batch_size, num_mels, real_total_length_of_predict_duration(171))
 
-        # Generate sample tracing the probability flow
+        # Generate sample tracing the probability flow, mu_y: (batch_size, num_mels, total_length_of_predict_duration(172)), y_mask: (batch_size,1,total_length_of_predict_duration(172))
         decoder_outputs = self.decoder(mu_y, y_mask, n_timesteps, temperature, spks)
         decoder_outputs = decoder_outputs[:, :, :y_max_length]
 
