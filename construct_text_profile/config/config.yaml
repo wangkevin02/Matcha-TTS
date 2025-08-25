@@ -20,7 +20,7 @@ arxiv:
   max_return: 2
 
 openai:
-  api_key: "sk-npSRVdUhy5gszhxT508aE80f6f0d40638a6b8309DbF5E569"  #sk-npSRVdUhy5gszhxT508aE80f6f0d40638a6b8309DbF5E569 #"sk-zfPeFIqwVlT3rlAv9f5a2258A3D44c0487EbEe69B30224Fb" (gaochao) "sk-VBt2c7nqVQcmBi3i0721E63292C4439eA1246a7a4a7e511b","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"
+  api_key: "sk-xxx"  #sk-npSRVdUhy5gszhxT508aE80f6f0d40638a6b8309DbF5E569 #"sk-zfPeFIqwVlT3rlAv9f5a2258A3D44c0487EbEe69B30224Fb" (gaochao) "sk-VBt2c7nqVQcmBi3i0721E63292C4439eA1246a7a4a7e511b","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"
   prompts_path:
     './prompts_config.json'
   ignore_title: ["reference","appendix","acknowledg"]
