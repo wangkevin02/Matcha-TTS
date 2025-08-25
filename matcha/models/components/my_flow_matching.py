@@ -128,6 +128,7 @@ class Decoder_Vec(Decoder):
         
         # 2. Replace the final 1D convolution with a Linear layer.
         #    This layer will project the pooled sequence representation to the final output vector.
+        self.upper_proj = nn.Linear(out_channels, channels[-1])
         self.final_proj = nn.Linear(channels[-1], self.out_channels)
         
         # Re-initialize the new layer's weights
@@ -155,7 +156,6 @@ class Decoder_Vec(Decoder):
 
         t = self.time_embeddings(t)
         t = self.time_mlp(t)
-        
         # 2. Concatenate the expanded vector, the condition, and speaker embeddings
         # The `in_channels` of the model must be `mu.dim + x.dim + spk.dim`
         to_cat = [x_expanded, mu]
@@ -165,7 +165,7 @@ class Decoder_Vec(Decoder):
             
         # x_combined: (batch, mu_dim + x_dim + spk_dim, seq_len)
         x_combined = torch.cat(to_cat, dim=1)
-        
+        print(f"x_combined: {x_combined.shape}")
         # The rest of the U-Net architecture runs exactly as before
         hiddens = []
         masks = [mask]
@@ -238,10 +238,13 @@ class CFM_Vec(BASECFM_Vec):
 
         # The input to the U-Net is the concatenation of the expanded target vector,
         # the text embedding condition, and optionally a speaker embedding.
+        # output_dim: 256
+        # text_emb_dim: 1024
         decoder_in_channels = output_dim + text_emb_dim + (spk_emb_dim if n_spks > 1 else 0)
         
         self.estimator = Decoder_Vec(
             in_channels=decoder_in_channels, 
             out_channels=output_dim, 
+            # decoder channels: (256, 512, 1024),
             **decoder_params
         )

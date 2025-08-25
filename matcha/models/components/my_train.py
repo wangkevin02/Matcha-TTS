@@ -1,3 +1,12 @@
+import debugpy
+try:
+    # 5678 is the default attach port in the VS Code debug configurations. Unless a host and port are specified, host defaults to 127.0.0.1
+    debugpy.listen(("0.0.0.0", 9501))
+    print("Waiting for debugger attach")
+    debugpy.wait_for_client()
+except Exception as e:
+    pass
+
 # train.py
 import os
 import argparse
@@ -27,8 +36,9 @@ def cleanup():
     destroy_process_group()
 
 class EmbeddingDataset(Dataset):
-    def __init__(self, jsonl_path):
+    def __init__(self, jsonl_path, condition_emb_dim):
         self.items = []
+        self.condition_emb_dim = condition_emb_dim
         with open(jsonl_path, 'r', encoding='utf-8') as f:
             for line in f:
                 self.items.append(json.loads(line))
@@ -48,10 +58,15 @@ class EmbeddingDataset(Dataset):
             label_emb = torch.load(label_path, map_location='cpu')
         else: # list of float
             label_emb = torch.tensor(item['label'], dtype=torch.float32)
-
+        condition_emb_shape = condition_emb.shape
+        if condition_emb_shape[-1] == self.condition_emb_dim:
+            print(f"permute condition_emb")
+            condition_emb = condition_emb.permute(1, 0)
+        label_shape = label_emb.shape
+        condition_emb_shape = condition_emb.shape
         # Create a mask for the condition (assuming 0 padding is not used, so mask is all ones)
         # If you have padding, you need to generate a proper mask here.
-        mask = torch.ones(1, condition_emb.shape[1]).float()
+        mask = torch.ones(1, condition_emb_shape[-1]).float()
         
         return condition_emb, mask, label_emb
 
@@ -61,7 +76,7 @@ def train(rank, world_size, args):
     device = rank
 
     # --- 1. Create Dataset and DataLoader ---
-    dataset = EmbeddingDataset(args.data_path)
+    dataset = EmbeddingDataset(args.data_path, args.text_emb_dim)
     sampler = DistributedSampler(dataset, num_replicas=world_size, rank=rank, shuffle=True)
     dataloader = DataLoader(
         dataset,
@@ -75,11 +90,13 @@ def train(rank, world_size, args):
     # Example parameters, you should load these from a config file (e.g., Hydra, YAML)
     cfm_params = argparse.Namespace(solver='euler', sigma_min=1e-4)
     decoder_params = {
-        "channels": (256, 512, 1024),
-        "n_blocks": 2,
+        "channels": (256, 256),
+        "n_blocks": 1,
         "num_mid_blocks": 2,
         "attention_head_dim": 64,
-        "num_heads": 8,
+        "num_heads": 2,
+        "dropout": 0.05,
+        "act_fn": "snakebeta",
     }
 
     model = CFM_Vec(
@@ -102,6 +119,7 @@ def train(rank, world_size, args):
             condition = condition.to(device)
             mask = mask.to(device)
             label = label.to(device)
+            print(f"condition: {condition.shape}, mask: {mask.shape}, label: {label.shape}")
 
             optimizer.zero_grad()
             
@@ -137,7 +155,7 @@ if __name__ == "__main__":
     parser.add_argument('--data_path', type=str, default="./sample_data.jsonl", help='Path to the .jsonl data file.')
     parser.add_argument('--output_dir', type=str, default="./output", help='Directory to save checkpoints.')
     parser.add_argument('--text_emb_dim', type=int, default=1024, help='Dimension of text embeddings.')
-    parser.add_argument('--output_dim', type=int, default=256, help='Dimension of the target label embedding.')
+    parser.add_argument('--output_dim', type=int, default=192, help='Dimension of the target label embedding.')
     parser.add_argument('--epochs', type=int, default=100, help='Number of training epochs.')
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size per GPU.')
     parser.add_argument('--learning_rate', type=float, default=1e-4, help='Learning rate.')
