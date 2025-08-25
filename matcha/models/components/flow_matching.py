@@ -48,8 +48,8 @@ class BASECFM(torch.nn.Module, ABC):
             sample: generated mel-spectrogram
                 shape: (batch_size, n_feats, mel_timesteps)
         """
-        z = torch.randn_like(mu) * temperature
-        t_span = torch.linspace(0, 1, n_timesteps + 1, device=mu.device)
+        z = torch.randn_like(mu) * temperature # (1,80,172), (batch_size,num_mels,num_phonemes_duration)
+        t_span = torch.linspace(0, 1, n_timesteps + 1, device=mu.device) # 将时间步长从0到1均匀分成n_timesteps + 1(11)个点
         return self.solve_euler(z, t_span=t_span, mu=mu, mask=mask, spks=spks, cond=cond)
 
     def solve_euler(self, x, t_span, mu, mask, spks, cond):
@@ -74,6 +74,13 @@ class BASECFM(torch.nn.Module, ABC):
         sol = []
 
         for step in range(1, len(t_span)):
+            # x: [batch_size, num_mels, num_phonemes_duration], 当前时间的中间结果，形状与mu相同，相当于是润色mu，使之更接近真实数据
+            # mask: [batch_size, 1, num_phonemes_duration]
+            # mu: [batch_size, num_mels, num_phonemes_duration], 编码器的条件信息
+            # t: float, current timestep
+            # spks: [batch_size, spk_emb_dim]
+            # cond: Not used but kept for future purposes
+            # output: [batch_size, num_mels, num_phonemes_duration]
             dphi_dt = self.estimator(x, mask, mu, t, spks, cond)
 
             x = x + dt * dphi_dt

@@ -208,7 +208,7 @@ class Decoder(nn.Module):
         n_blocks=1,
         num_mid_blocks=2,
         num_heads=4,
-        act_fn="geglu",
+        act_fn="snake",
         down_block_type="transformer",
         mid_block_type="transformer",
         up_block_type="transformer",
@@ -378,20 +378,20 @@ class Decoder(nn.Module):
             _type_: _description_
         """
 
-        t = self.time_embeddings(t)
-        t = self.time_mlp(t)
-
-        x = pack([x, mu], "b * t")[0]
+        t = self.time_embeddings(t) # t: (batch_size, in_channels(160))
+        t = self.time_mlp(t) # t: (batch_size, time_embed_dim(1024))
+        # mu: (batch_size, num_mels, num_phonemes_duration), x: (batch_size, num_mels, num_phonemes_duration)
+        x = pack([x, mu], "b * t")[0] # x: (batch_size, 2*num_mels, num_phonemes_duration)，在mel特征维度上，将mu和x拼接起来
 
         if spks is not None:
-            spks = repeat(spks, "b c -> b c t", t=x.shape[-1])
-            x = pack([x, spks], "b * t")[0]
+            spks = repeat(spks, "b c -> b c t", t=x.shape[-1]) # spks: (batch_size, condition_channels, num_phonemes_duration)
+            x = pack([x, spks], "b * t")[0] # x: (batch_size, 2*num_mels+condition_channels, num_phonemes_duration)
 
         hiddens = []
-        masks = [mask]
+        masks = [mask] # mask: (batch_size, 1, num_phonemes_duration)
         for resnet, transformer_blocks, downsample in self.down_blocks:
-            mask_down = masks[-1]
-            x = resnet(x, mask_down, t)
+            mask_down = masks[-1] # mask_down: (batch_size, 1, num_phonemes_duration)
+            x = resnet(x, mask_down, t) # x: (batch_size, 2*num_mels+condition_channels, num_phonemes_duration)
             x = rearrange(x, "b c t -> b t c")
             mask_down = rearrange(mask_down, "b 1 t -> b t")
             for transformer_block in transformer_blocks:
